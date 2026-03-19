@@ -1,0 +1,70 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix rdfc: <https://w3id.org/rdf-connect#>.
+@prefix tree: <https://w3id.org/tree#>.
+@prefix dct: <http://purl.org/dc/terms/>.
+@prefix sh: <http://www.w3.org/ns/shacl#>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix as: <https://www.w3.org/ns/activitystreams#>.
+
+#########################################
+### Import runners and processors
+#########################################
+<> owl:imports <./node_modules/@rdfc/js-runner/index.ttl>,
+  <./node_modules/@rdfc/file-utils-processors-ts/processors.ttl>,
+  <./node_modules/ldes-client/processor.ttl>,
+  <./node_modules/@rdfc/shacl-processor-ts/processors.ttl>,
+  <./node_modules/@rdfc/log-processor-ts/processor.ttl>.
+
+#########################################
+# Channel definitions
+#########################################
+# Data channel from rdfc:LdesClient to rdfc:Validate
+<ldesMembers> a rdfc:Reader, rdfc:Writer.
+
+# Data channel from rdfc:Validate to rdfc:LogProcessorJs
+<validLdesMembers> a rdfc:Reader, rdfc:Writer.
+
+# Data channel from rdfc:Validate to rdfc:LogProcessorJs
+<shaclReport> a rdfc:Reader, rdfc:Writer.
+
+#########################################
+### Define the pipeline
+#########################################
+<> a rdfc:Pipeline;
+  rdfc:consistsOf [
+    rdfc:instantiates rdfc:NodeRunner;
+    rdfc:processor <ldesClient>, <shaclValidator>, <logMembers>, <logReport>;
+  ].
+
+#########################################
+# Processor definitions
+#########################################
+# Processor to read member events from an LDES
+<ldesClient> a rdfc:LdesClient;
+  rdfc:url "http://localhost:3000/ldes";
+  rdfc:output <ldesMembers>;
+  rdfc:ordered "ascending";
+  rdfc:materialize "true"^^xsd:boolean.
+
+# Processor to validate the output RDF with SHACL
+<shaclValidator> a rdfc:Validate;
+  rdfc:shaclPath "./shape.ttl";
+  rdfc:incoming <ldesMembers>;
+  rdfc:outgoing <validLdesMembers>;
+  rdfc:report <shaclReport>;
+  rdfc:validationIsFatal false;
+  rdfc:mime "application/n-triples".
+
+# Processor to log the valid LDES members
+<logMembers> a rdfc:LogProcessorJs;
+  rdfc:reader <validLdesMembers>;
+  rdfc:level "info";
+  rdfc:label "validLdesMembers".
+
+# Processor to log the SHACL report
+<logReport> a rdfc:LogProcessorJs;
+  rdfc:reader <shaclReport>;
+  rdfc:level "error";
+  rdfc:label "shaclReport".
+

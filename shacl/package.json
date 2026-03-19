@@ -1,0 +1,15 @@
+{
+    "name": "ldes-validation-pipeline",
+    "version": "0.1.0",
+    "description": "RDF-Connect pipeline to validate LDES members using SHACL",
+    "author": "Julián Rojas",
+    "license": "MIT",
+    "dependencies": {
+        "@rdfc/file-utils-processors-ts": "^1.0.3",
+        "@rdfc/js-runner": "^3.0.3",
+        "@rdfc/log-processor-ts": "^2.0.3",
+        "@rdfc/orchestrator-js": "^2.0.2",
+        "@rdfc/shacl-processor-ts": "^1.0.1",
+        "ldes-client": "^0.3.1"
+    }
+}
