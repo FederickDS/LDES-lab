@@ -54,66 +54,20 @@ app.get('/ldes/:fragment', async (req, res) => {
             namedNode(BASE_URL),
             namedNode(`${TREE}view`),
             // Add here a named node with the URL of the first fragment
-            namedNode(BASE_URL + '/' + sortedFragments[0].name)
         ));
 
         // Add tree:relation to the next fragment (if any) using the proper type (tree:GreaterThanRelation) 
         // and value (see findGreaterThanValue function below).
+
+
+        // Set proper cache header ('Cache-Control: max-age=10' if this is the latest fragment 
+        // and 'Cache-Control: immutable' otherwise)
         if (index === sortedFragments.length - 1) {
             // This is the latest fragment
         } else {
             // This is not the latest fragment
-            const nextFragment = sortedFragments[index + 1].name;
-            const relationNode = blankNode('relation');
-
-            store.addQuad(quad(
-                namedNode(`${BASE_URL}/${fragmentName}`),
-                namedNode(`${TREE}relation`),
-                relationNode
-            ));
-            store.addQuad(quad(
-                namedNode(`${BASE_URL}/${fragmentName}`),
-                namedNode(`${RDF}type`),
-                namedNode(`${TREE}Node`)
-            ));
-            store.addQuad(quad(
-                relationNode,
-                namedNode(`${RDF}type`),
-                namedNode(`${TREE}GreaterThanRelation`)
-            ));
-            store.addQuad(quad(
-                relationNode,
-                namedNode(`${TREE}node`),
-                namedNode(`${BASE_URL}/${nextFragment}`)
-            ));
-            store.addQuad(quad(
-                relationNode,
-                namedNode(`${TREE}path`),
-                namedNode(`${DCT}modified`)
-            ));
-            store.addQuad(quad(
-                relationNode,
-                namedNode(`${TREE}value`),
-                literal(findGreaterThanValue(store), namedNode(`${XSD}dateTime`))
-            ));
         }
 
-        // Set proper cache header ('Cache-Control: max-age=10' if this is the latest fragment 
-        if (index === sortedFragments.length - 1){
-            res.set('Cache-Control', 'max-age=10');
-        } else {
-            // and 'Cache-Control: immutable' otherwise)
-            res.set('Cache-Control', 'immutable');
-        }
-        
-        const writer = new Writer({ prefixes: { tree: TREE, dct: DCT } });
-
-        writer.addQuads(store.getQuads(null, null, null, null));
-
-        writer.end((error, result) => {
-            res.setHeader('Content-Type', 'text/turtle');
-            res.send(result);
-        });
     } else {
         res.status(404).send('Not found');
         return;
