@@ -6,9 +6,9 @@
     "license": "MIT",
     "dependencies": {
         "@rdfc/file-utils-processors-ts": "^1.0.3",
-        "@rdfc/js-runner": "^3.0.3",
+        "@rdfc/js-runner": "^3.1.0",
         "@rdfc/log-processor-ts": "^2.0.3",
-        "@rdfc/orchestrator-js": "^2.0.2",
+        "@rdfc/orchestrator-js": "^2.1.0",
         "@rdfc/shacl-processor-ts": "^1.0.1",
         "ldes-client": "^0.3.1"
     }

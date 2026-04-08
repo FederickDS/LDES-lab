@@ -15,8 +15,8 @@
   tree:member <https://persons.org/john/v0>, <https://persons.org/john/v1>.
 
 <https://persons.org/john/v0> a person:Person;
-  person:birthName "John Doe"@en;
-  dct:alternativeName "Johnny Doe"@en;
+  person:birthName "John Doe";
+  dct:alternativeName "Johnny Doe";
   cv:domicile [
     a locn:Address;
     locn:fullAddress "123 Main St";
@@ -31,8 +31,8 @@
   dct:isVersionOf <https://persons.org/john>.
 
 <https://persons.org/john/v1> a person:Person;
-  person:birthName "John Doe"@en;
-  dct:alternativeName "Johnny Doe"@en;
+  person:birthName "John Doe";
+  dct:alternativeName "Johnny Doe";
   cv:domicile [
     a locn:Address;
     locn:fullAddress "Avenida de Betanzos 79";

@@ -1,13 +1,69 @@
-@prefix sh: <http://www.w3.org/ns/shacl#>.
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
-@prefix person: <http://www.w3.org/ns/person#>.
-@prefix locn: <http://www.w3.org/ns/locn#>.
-@prefix dct: <http://purl.org/dc/terms/>.
-@prefix cv: <http://data.europa.eu/m8g/>.
-@prefix ex: <http://example.org/shape/>.
-@prefix op-country: <http://publications.europa.eu/resource/authority/country/>.
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix person: <http://www.w3.org/ns/person#> .
+@prefix locn: <http://www.w3.org/ns/locn#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix cv: <http://data.europa.eu/m8g/> .
+@prefix ex: <http://example.org/shape/> .
+@prefix op-country: <http://publications.europa.eu/resource/authority/country/> .
 
-ex:PersonShape a sh:NodeShape;
-  sh:targetClass person:Person;
+ex:PersonShape a sh:NodeShape ;
+  sh:targetClass person:Person ;
 # Define the rest of your SHACL shape here
+sh:property [
+  sh:path person:birthName ;
+  sh:datatype xsd:string;
+  sh:minCount 1 ;
+] ;
+
+sh:property [
+  sh:path dct:alternativeName ;
+  sh:datatype xsd:string;
+  sh:minCount 1 ;
+] ;
+
+sh:property [
+  sh:path dct:modified ;
+  sh:datatype xsd:dateTime ;
+  sh:minCount 1;
+] ;
+
+sh:property [
+  sh:path dct:isVersionOf ;
+  sh:nodeKind sh:IRI ;
+] ;
+
+sh:property [
+    sh:path cv:domicile ;
+    sh:minCount 1 ;
+    sh:node ex:AddressShape ;
+  ] ;
+
+sh:property [
+    sh:path person:residency ;
+    sh:minCount 1 ;
+    sh:node ex:ResidencyShape ;
+  ] .
+  
+ex:AddressShape a sh:NodeShape ;
+  sh:property [
+    sh:path locn:fullAddress ;
+    sh:datatype xsd:string ;
+    sh:minCount 1 ;
+  ] ;
+  sh:property [
+    sh:path locn:postName ;
+    sh:minCount 1;
+  ] .
+
+ex:ResidencyShape a sh:NodeShape ;
+  sh:property [
+    sh:path dct:id ;
+    sh:nodeKind sh:IRI ;
+    sh:minCount 1 ;
+  ] ;
+  sh:property [
+    sh:path rdfs:label ;
+    sh:minCount 1 ;    
+  ] .

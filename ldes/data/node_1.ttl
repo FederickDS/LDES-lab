@@ -15,8 +15,8 @@
     tree:member <https://persons.org/john/v2>, <https://persons.org/john/v3>.
 
 <https://persons.org/john/v2> a person:Person;
-    person:birthName "John Doe"@en;
-    dct:alternativeName "Johnny Doe"@en;
+    person:birthName "John Doe";
+    dct:alternativeName "Johnny Doe";
     cv:domicile [
         a locn:Address;
         locn:fullAddress "Musterstraße 123"; 
@@ -31,8 +31,8 @@
     dct:isVersionOf <https://persons.org/john>.
 
 <https://persons.org/john/v3> a person:Person;
-    person:birthName "John Doe"@en;
-    dct:alternativeName "Johnny Doe"@en;
+    person:birthName "John Doe";
+    dct:alternativeName "Johnny Doe";
     cv:domicile [
         a locn:Address;
         locn:fullAddress "Krijgsgasthuisstraat 86";
